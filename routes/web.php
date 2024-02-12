@@ -1,7 +1,9 @@
 <?php
 
 use App\Livewire\Category;
+use App\Livewire\Tasks\TasksIndex;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +18,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-
-
-
-    // ->middleware(['auth', 'verified'])
-
 Route::get('/category', Category::class);
+ 
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth'])
+//     ->name('dashboard');
+
+Route::middleware('auth')->group(function(){
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('profile', 'profile')->name('profile');
+    Route::get('/tasks', TasksIndex::class)->name('tasks.index');
+});
 
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
 
 require __DIR__.'/auth.php';
